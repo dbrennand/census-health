@@ -16,16 +16,24 @@ scrape_configs:
       - targets:
           - caddy:2019
 
-  - job_name: blackbox_exporter
+  - job_name: blackbox_exporter_http_probes
     metrics_path: /probe
     params:
       module:
         - http_2xx
     static_configs:
       - targets:
-          - https://ps2alerts.com
-          - https://wt.honu.pw
+          # Alphabetical by primary domain
           - https://ps2.fisu.pw
+          - https://wt.honu.pw
+          - https://census.lithafalcon.cc/get/ps2
+          - https://ps2alerts.com
+          - https://api.ps2alerts.com
+          - https://nanite-systems.net
+          - https://outfit-tracker.com
+          - https://ps2.live
+          - https://recursiontracker.com
+          - https://voidwell.com
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
