@@ -1,0 +1,52 @@
+---
+version: "3.9"
+services:
+  caddy:
+    image: caddy:2.6.2-alpine
+    container_name: caddy
+    ports:
+      - 80:80
+      - 443:443
+      - 443:443/udp
+    volumes:
+      - ./config/Caddyfile:/etc/caddy/Caddyfile
+    restart: unless-stopped
+
+  prometheus:
+    image: quay.io/prometheus/prometheus:v2.40.7
+    container_name: prometheus
+    expose:
+      - 9090
+    volumes:
+      - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  blackbox_exporter:
+    image: quay.io/prometheus/blackbox-exporter:v0.23.0
+    container_name: blackbox_exporter
+    command: --config.file=/config/blackbox.yml
+    expose:
+      - 9115
+    volumes:
+      - ./config/blackbox.yml:/config/blackbox.yml
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana-oss:9.3.2
+    container_name: grafana
+    expose:
+      - 3000
+    volumes:
+      - grafana-data:/var/lib/grafana
+      - ./config/grafana/:/etc/grafana/provisioning
+    depends_on:
+      - caddy
+      - prometheus
+      - blackbox_exporter
+    environment:
+      - "GF_SECURITY_ADMIN_USER=${GF_SECURITY_ADMIN_USER}"
+      - "GF_SECURITY_ADMIN_PASSWORD=${GF_SECURITY_ADMIN_PASSWORD}"
+    restart: unless-stopped
+
+volumes:
+  grafana-data:
