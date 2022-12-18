@@ -10,4 +10,8 @@
    docker-compose up -d
    ```
 
-Visit `https://localhost` to access Grafana and use the credentials set in [.env](.env) ✨
+Grafana is accessible at `https://localhost`
+
+Prometheus is accessible at `https://prometheus.localhost`
+
+Enjoy! ✨
