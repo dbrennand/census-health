@@ -1,0 +1,10 @@
+{
+        servers {
+                metrics
+        }
+}
+
+localhost {
+        reverse_proxy grafana:3000
+        tls internal
+}
