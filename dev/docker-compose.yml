@@ -8,6 +8,8 @@ services:
       - 80:80
       - 443:443
       - 443:443/udp
+    expose:
+      - 9000
     volumes:
       - ./config/Caddyfile:/etc/caddy/Caddyfile
     restart: unless-stopped
@@ -24,7 +26,7 @@ services:
   blackbox_exporter:
     image: quay.io/prometheus/blackbox-exporter:v0.23.0
     container_name: blackbox_exporter
-    command: --config.file=/config/blackbox.yml
+    command: --config.file=/config/blackbox.yml --log.level=debug
     expose:
       - 9115
     volumes:

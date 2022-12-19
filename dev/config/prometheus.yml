@@ -14,7 +14,7 @@ scrape_configs:
   - job_name: caddy
     static_configs:
       - targets:
-          - caddy:2019
+          - caddy:9000
 
   - job_name: blackbox_exporter_http_probes
     metrics_path: /probe
@@ -34,6 +34,22 @@ scrape_configs:
           - https://ps2.live
           - https://recursiontracker.com
           - https://voidwell.com
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115
+
+  - job_name: blackbox_exporter_ps2alerts
+    metrics_path: /probe
+    params:
+      module:
+        - http_ps2alerts_status
+    static_configs:
+      - targets:
+          - https://api.ps2alerts.com/healthcheck
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
