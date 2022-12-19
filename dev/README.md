@@ -14,4 +14,6 @@ Grafana is accessible at `https://localhost`
 
 Prometheus is accessible at `https://prometheus.localhost`
 
+If you make config changes to `prometheus.yml` or `blackbox.yml` etc, you will need to run `docker-compose restart` for it to properly apply.
+
 Enjoy! ✨
