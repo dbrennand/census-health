@@ -17,10 +17,19 @@ services:
   prometheus:
     image: quay.io/prometheus/prometheus:v2.40.7
     container_name: prometheus
+    command: --config.file=/etc/prometheus/prometheus.yml --web.enable-lifecycle
     expose:
       - 9090
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    restart: unless-stopped
+
+  prometheus-config-reloader:
+    image: ghcr.io/prometheus-operator/prometheus-config-reloader:main
+    container_name: prometheus_config_reloader
+    command: --config-file=/prometheus.yml --log-level=debug --reload-url=http://prometheus:9090/-/reload
+    volumes:
+      - ./config/prometheus.yml:/prometheus.yml
     restart: unless-stopped
 
   blackbox_exporter:
