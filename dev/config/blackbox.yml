@@ -25,4 +25,4 @@ modules:
       preferred_ip_protocol: "ip4"
       ip_protocol_fallback: false
       fail_if_body_matches_regexp:
-        - '{"status":"ok"'
+        - '"status":"ok"'
