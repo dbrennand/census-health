@@ -24,9 +24,11 @@ scrape_configs:
     static_configs:
       - targets:
           # Alphabetical by primary domain
+          - https://census.daybreakgames.com
           - https://ps2.fisu.pw
           - https://wt.honu.pw
           - https://census.lithafalcon.cc/get/ps2
+          - https://planetside2.com
           - https://ps2alerts.com
           - https://api.ps2alerts.com
           - https://api.ps2alerts.com/healthcheck
@@ -35,6 +37,22 @@ scrape_configs:
           - https://ps2.live
           - https://recursiontracker.com
           - https://voidwell.com
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox_exporter:9115
+
+  - job_name: blackbox_exporter_http_probe_push_planetside2
+    metrics_path: /probe
+    params:
+      module:
+        - http_push_planetside2
+    static_configs:
+      - targets:
+          - https://push.planetside2.com
     relabel_configs:
       - source_labels: [__address__]
         target_label: __param_target
