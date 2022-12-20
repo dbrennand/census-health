@@ -10,7 +10,7 @@ modules:
         - "HTTP/1.1"
         - "HTTP/2.0"
       method: GET
-      follow_redirects: false
+      follow_redirects: true
       preferred_ip_protocol: "ip4"
       ip_protocol_fallback: false
   http_ps2alerts_status:
@@ -25,4 +25,4 @@ modules:
       preferred_ip_protocol: "ip4"
       ip_protocol_fallback: false
       fail_if_body_matches_regexp:
-        - '"status":"ok"'
+        - '"status":"down"'
