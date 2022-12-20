@@ -22,6 +22,8 @@ services:
       - 9090
     volumes:
       - ./config/prometheus.yml:/etc/prometheus/prometheus.yml
+    depends_on:
+      - blackbox_exporter
     restart: unless-stopped
 
   prometheus-config-reloader:
@@ -30,6 +32,8 @@ services:
     command: --config-file=/config/prometheus.yml --log-level=debug --reload-url=http://prometheus:9090/-/reload
     volumes:
       - ./config/prometheus.yml:/config/prometheus.yml
+    depends_on:
+      - prometheus
     restart: unless-stopped
 
   blackbox-config-reloader:
@@ -38,6 +42,8 @@ services:
     command: --config-file=/config/blackbox.yml --log-level=debug --reload-url=http://blackbox_exporter:9115/-/reload
     volumes:
       - ./config/blackbox.yml:/config/blackbox.yml
+    depends_on:
+      - blackbox_exporter
     restart: unless-stopped
 
   blackbox_exporter:
